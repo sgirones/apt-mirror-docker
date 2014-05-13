@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:trusty
 
 MAINTAINER  Salvador Girones <salvadorgirones@gmail.com>
 
