@@ -1,0 +1,12 @@
+#!/bin/bash
+
+NAME=nginx
+
+docker inspect $NAME 2>&1 >/dev/null
+if [[ $? -eq 0 ]]; then
+  echo "Remove old nginx instance..."
+  docker rm -f $NAME 2>&1 >/dev/null
+fi
+
+echo "Running nginx..."
+docker run -d -p 80:80 -v /shared/var/spool/apt-mirror/mirror/archive.ubuntu.com/:/mirror/ -v `pwd`/nginx/sites-enabled:/etc/nginx/sites-enabled -v `pwd`/nginx/log:/var/log/nginx --name="${NAME}" dockerfile/nginx
