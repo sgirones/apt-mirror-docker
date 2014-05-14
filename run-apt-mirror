@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+if [[ ! -d /shared/var/spool/apt-mirror ]]; then
+  echo "Creating /shared/var/spool/apt-mirror for storing the mirror data"
+  mkdir -p /shared/var/spool/apt-mirror
+fi
+
+echo "Cleaning old containers"
+for i in $(docker ps -a | grep run-apt-mirror | awk '{print $1}'); do docker rm -f $i; done
+
+echo "Run apt-mirror service..."
+docker run -d -v /shared/var/spool/apt-mirror:/var/spool/apt-mirror --name="run-apt-mirror" apt-mirror-service
